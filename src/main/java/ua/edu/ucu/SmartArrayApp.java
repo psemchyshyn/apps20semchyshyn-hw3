@@ -51,10 +51,47 @@ public class SmartArrayApp {
 
     public static String[]
             findDistinctStudentNamesFrom2ndYearWithGPAgt4AndOrderedBySurname(Student[] students) {
+        MyPredicate predicate = new MyPredicate() {
+            @Override
+            public boolean test(Object t) {
+                return ((Student) t).getYear() == 2 && ((Student) t).getGPA() > 4;
+            }
+        };
 
-        // Hint: to convert Object[] to String[] - use the following code
-        //Object[] result = studentSmartArray.toArray();
-        //return Arrays.copyOf(result, result.length, String[].class);
-        return null;
+       MyComparator cmp = new MyComparator() {
+           @Override
+           public int compare(Object o1, Object o2) {
+               String first = ((Student) o1).getSurname() ;
+               String second = ((Student) o2).getSurname();
+
+               if (first.length() > second.length()) {
+                   return 1;
+               } else if (second.length() > first.length()) {
+                   return -1;
+               } else {
+                   for (int i = 0; i < second.length(); i++) {
+                       if (first.charAt(i) > second.charAt(i)) {
+                           return 1;
+                       } else if (second.charAt(i) > first.charAt(i)) {
+                           return -1;
+                       }
+                   }
+               }
+               return 0;
+           }
+       };
+
+       MyFunction function = new MyFunction() {
+           @Override
+           public Object apply(Object t) {
+               return ((Student) t).getSurname() + " " + ((Student) t).getName();
+           }
+       };
+
+       SmartArray studentSmartArray = new BaseArray(students);
+       studentSmartArray = new MapDecorator(new SortDecorator(new FilterDecorator(
+               new DistinctDecorator(studentSmartArray), predicate), cmp), function);
+        Object[] result = studentSmartArray.toArray();
+        return Arrays.copyOf(result, result.length, String[].class);
     }
 }
