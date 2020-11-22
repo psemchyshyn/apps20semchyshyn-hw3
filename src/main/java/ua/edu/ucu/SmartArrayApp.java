@@ -54,7 +54,7 @@ public class SmartArrayApp {
         MyPredicate predicate = new MyPredicate() {
             @Override
             public boolean test(Object t) {
-                return ((Student) t).getYear() == 2 && ((Student) t).getGPA() > 4;
+                return ((Student) t).getYear() == 2 && ((Student) t).getGPA() >= 4;
             }
         };
 

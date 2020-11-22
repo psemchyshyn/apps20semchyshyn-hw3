@@ -1,6 +1,9 @@
 package ua.edu.ucu;
 
 
+import javax.swing.plaf.synth.SynthListUI;
+import java.util.Objects;
+
 class Student {
 
     private double GPA;
@@ -29,6 +32,21 @@ class Student {
 
     public String getSurname() {
         return surname;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getSurname(), getGPA(), getYear());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || obj.getClass() != getClass()) {
+            return false;
+        }
+        Student sd = (Student) obj;
+        return getName().equals(sd.getName()) && getSurname().equals(sd.getSurname())
+                && getGPA() == sd.getGPA() && getYear() == sd.getYear();
     }
 
     @Override
